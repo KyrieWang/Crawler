@@ -20,6 +20,8 @@ public:
 private:
 	/*处理参数*/
 	int initArgv(int argc, char* argv[]);
+
+	int isDeamon;
 };
 
 #endif

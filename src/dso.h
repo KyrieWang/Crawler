@@ -3,13 +3,18 @@
 
 #include <iostream>
 #include <map>
+#include <list>
 #include <string>
 
 #define MODULE_OK 0
 #define MODULE_ERR 1
 
-#define MODULE_MAJOR_VERSION 1
-#define MODULE_SUB_VERSION 0
+#define MAGIC_MAJOR_NUMBER 1
+#define MAGIC_MINOR_NUMBER 0
+
+#define STANDARD_MODULE_STUFF MAGIC_MAJOR_NUMBER, \
+							  MAGIC_MINOR_NUMBER, \
+							  _FILE_
 
 using namespace std;
 
@@ -20,6 +25,12 @@ typedef struct Module
 	char* name;
 	void (*init)(Module*);
 	int (*handle)(void*);	
+};
+
+struct htmlParserParam
+{
+	string url;
+	list<string> urls;
 };
 
 class DSO_Manager
