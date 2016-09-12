@@ -7,32 +7,34 @@
 
 using namespace std;
 
+struct stru_confFile
+{
+	int job_num; //并发任务数
+	int deeps; //抓取深度
+	int log_level; //输出日志等级
+	char* seed; //url种子
+	char* module_path; //模块存放路径
+	vector<string> module_name; //模块名
+	vector<string> file_type; //抓取的资源类型
+};
+
+/*
+*配置文件读取模块
+*/
 class Confparser
 {
 public:
 	shared_ptr<Confparser> getInstance();
 
-	int loader(const char* conf_filepath);
-	int getJobNum();
-	int getDeep();
-	int getLogLevel();
-	char getUrlSeed();
-	char* getModulePath();
-	vector<string> getModules();
-	vector<string> getFileTypes();
+	int loader(const char* conf_filepath); //读取配置文件
+	struct stru_confFile* getConfFile();
 
 private:
 	Confparser();
 
 	static shared_ptr<Confparser> self_ptr;
 
-	int job_num;
-	int deeps;
-	int log_level;
-	char* seed;
-	char* module_path;
-	vector<string> module_name;
-	vector<string> file_type;
+	struct stru_confFile conf_file;
 };
 
 #endif

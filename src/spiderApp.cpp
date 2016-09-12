@@ -1,21 +1,39 @@
 #include "spiderApp.h"
+#include "spider.h"
+#include "confparser.h"
 
-int main(int argc, char const *argv[])
+SpiderApp::SpiderApp()
 {
-	/*程序初始化*/
-	spiderApp app;
 
-	if (app.initApp(argc ,argv) == 0)
-	{
-		SPIDER_LOG(SPIDER_LEVEL_ERROR, "app init is failed");
-		return 1;
-	}
-
-	if (app.run() == 0)
-	{
-		SPIDER_LOG_ERROR(SPIDER_LEVEL_ERROR, "main app has exception");
-		return 1;
-	}
-
-	return 0;
 }
+
+SpiderApp::~SpiderApp()
+{
+
+}
+
+int SpiderApp::initApp(int argc, char* argv[])
+{
+	if(initArgv(argc, argv));
+
+	Confparser::instance()->loader(CONF_PATH);
+
+	if (isDeamon == 1)
+	{
+		this->deamon();
+	}
+
+	//载入所有模块
+
+}
+
+int SpiderApp::run()
+{
+
+}
+
+int SpiderApp::deamon()
+{
+
+}
+
