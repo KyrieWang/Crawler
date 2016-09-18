@@ -5,26 +5,24 @@
 
 using namespace std;
 
-Confparser::Confparser(){
+Confparser* Confparser::self_ptr = NULL;
 
-}
-
-shared_ptr<Confparser> Confparser::getInstance()
+Confparser* Confparser::getInstance()
 {
 	if (self_ptr == NULL)
-		self_ptr = make_shared<Confparser>();
+		self_ptr = new Confparser();
 	return self_ptr;
 }
 
-int Confparser::loader(const string& conf_filepath)
+int Confparser::Loader(const char* conf_filepath)
 {
 	const string& delim = m_Delimiter;
 	const string& comm = m_Comment;
-	const size_type skip = delim.length();
+	const string::size_type skip = delim.length();
 
 	ifstream in(conf_filepath);
 
-	if(in)
+	if(!in)
 		return 1;
 
 	while(!in.eof())
@@ -33,15 +31,15 @@ int Confparser::loader(const string& conf_filepath)
 		
 		getline(in, line);
 		line = line.substr(0, line.find(comm)); //去注释
-		size_type delim_pos = line.find(delim);
+		string::size_type delim_pos = line.find(delim);
 
-		if (delim_pos != npos)
+		if (delim_pos != string::npos)
 		{
 			string key = line.substr(0, delim_pos);
 			string value = line.replace(0, delim_pos+skip, "");
 
 			Trim(key);
-			Trim(value)
+			Trim(value);
 
 			m_Contents[key] = value;
 		}
@@ -54,6 +52,8 @@ int Confparser::loader(const string& conf_filepath)
 	conf_file.module_path = Read("module_path", conf_file.module_path);
 	conf_file.module_names = Read_Vec("module_names", conf_file.module_names);
 	conf_file.file_types = Read_Vec("file_types", conf_file.file_types);
+
+	return 0;
 }
 
 CONF_FILE* Confparser::getConfFile()
@@ -65,14 +65,14 @@ void Confparser::Trim(string& str)
 {
 	string space = " ";
 
-	size_type begin_pos = str.find_first_not_of(space);
-	if (begin_pos != npos)
+	string::size_type begin_pos = str.find_first_not_of(space);
+	if(begin_pos != string::npos)
 	{
 		str.erase(0, begin_pos);
 	}
 
-	size_type end_pos = str.find_last_not_of(space);
-	if (end_pos != npos)
+	string::size_type end_pos = str.find_last_not_of(space);
+	if(end_pos != string::npos)
 	{
 		str.erase(str.begin()+end_pos+1, str.end());
 	}

@@ -5,18 +5,17 @@
 #include <memory>
 #include <vector>
 #include <sstream>
-
-using namespace std;
+#include <map>
 
 typedef struct stru_confFile
 {
 	int job_num; //并发任务数
 	int deeps; //抓取深度
 	int log_level; //输出日志等级
-	string seed; //url种子
-	string module_path; //模块存放路径
-	vector<string> module_names; //模块名
-	vector<string> file_types; //抓取的资源类型
+	std::string seed; //url种子
+	std::string module_path; //模块存放路径
+	std::vector<std::string> module_names; //模块名
+	std::vector<std::string> file_types; //抓取的资源类型
 }CONF_FILE;
 
 /*
@@ -25,41 +24,41 @@ typedef struct stru_confFile
 class Confparser
 {
 protected:
-	string m_Delimiter = "=";
-	string m_Comment = "#";
-	map<string, string> m_Contents; //存储key和value
+	std::string m_Delimiter = "=";
+	std::string m_Comment = "#";
+	std::map<std::string, std::string> m_Contents; //存储key和value
 
 public:
-	shared_ptr<Confparser> getInstance();
+	static Confparser* getInstance();
 
 	int Loader(const char* conf_filepath); //读取配置文件
 	CONF_FILE* getConfFile();
 
 private:
 	template<class T>
-	T Read(const string& in_key, const T& in_value) const;
+	T Read(const std::string& in_key, T& in_value) const;
 
 	template<class T>
-	T Read_Vec(const string& in_key, const T& vec) const;
+	T Read_Vec(const std::string& in_key, T& vec) const;
 
 	template<class T>
-	T String_to_T(const string& str);
+	T String_to_T(const std::string& str) const;
 
-	void Trim(string& str); //去掉首尾的空格
+	void Trim(std::string& str); //去掉首尾的空格
 
 
 private:
-	Confparser();
+	Confparser(){}
 
-	static shared_ptr<Confparser> self_ptr;
+	static Confparser *self_ptr;
 
 	CONF_FILE conf_file;
 };
 
 template<class T>
-T Confparser::Read(const string& in_key, const T& in_value) const
+T Confparser::Read(const std::string& in_key, T& in_value) const
 {
-	map<string, string>::const_iterator mapci = m_Contents.find(in_key);
+	std::map<std::string, std::string>::const_iterator mapci = m_Contents.find(in_key);
 
 	if(mapci == m_Contents.end() )
 		return in_value;
@@ -68,20 +67,20 @@ T Confparser::Read(const string& in_key, const T& in_value) const
 }
 
 template<class T>
-T Confparser::Read_Vec(const string& in_key, const T& vec ) const
+T Confparser::Read_Vec(const std::string& in_key, T& vec ) const
 {
-	map<string, string>::const_iterator mapci = m_Contents.find(in_key);
+	std::map<std::string, std::string>::const_iterator mapci = m_Contents.find(in_key);
 
-	string line = mapci->second;
-	string in_line;
-	string comma = ",";
+	std::string line = mapci->second;
+	std::string in_line;
+	std::string comma = ",";
 	
-	size_type pos = line.find(comma);
-	size_type skip = comma.length();
+	std::string::size_type pos = line.find(comma);
+	std::string::size_type skip = comma.length();
 
-	if (pos != npos)
+	if (pos != std::string::npos)
 	{
-		while(pos ！= npos)
+		while(pos != std::string::npos)
 		{
 			in_line = line.substr(0, pos);
 			vec.push_back(in_line);
@@ -96,10 +95,10 @@ T Confparser::Read_Vec(const string& in_key, const T& vec ) const
 }
 
 template<class T>
-T Confparser::String_to_T(const string& str)
+T Confparser::String_to_T(const std::string& str) const
 {
 	T t;
-	istringstream ist(str);
+	std::istringstream ist(str);
 	ist >> t;
 	return t;
 }
