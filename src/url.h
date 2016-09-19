@@ -3,16 +3,14 @@
 
 #include <string>
 
-using namespace std;
-
 typedef struct stru_url
 {
-	string url; //完整的url
-	string protocal; //协议类型
-	string sitename; //域名
-	string path; //资源路径
-	string filename; //文件名
-	string filetype; //当前资源类型
+	std::string url; //完整的url
+	std::string protocal; //协议类型
+	std::string domainName; //域名
+	std::string path; //资源路径
+	std::string filename; //文件名
+	//std::string filetype; //当前资源类型
 	int state; //当前url处理状态
 	int deep; //当前url深度
 }URL;
@@ -20,15 +18,15 @@ typedef struct stru_url
 class Url
 {
 public:
-	Url(); 
+	Url();
 	~Url();
 
-	int parseUrl(string url_str); //解析url，填充url结构
+	int parserUrl(const std::string& url_str); //解析url，填充url结构
 
-	strut stru_url* getUrlData();
+	URL* getUrl();
 
 private:
-	struct stru_url m_url;
+	URL m_url;
 	
 };
 

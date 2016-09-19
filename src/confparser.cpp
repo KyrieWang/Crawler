@@ -5,7 +5,7 @@
 
 using namespace std;
 
-Confparser* Confparser::self_ptr = NULL;
+Confparser* Confparser::self_ptr = nullptr;
 
 Confparser* Confparser::getInstance()
 {

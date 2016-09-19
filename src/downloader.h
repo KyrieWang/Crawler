@@ -12,11 +12,11 @@ class Downloader
 public:
 	Downloader();
 	~Downloader();
-	int getResource(URL* url);   //下载资源内容 动作
+	int getResource(URL* url);   //下载资源内容动作
 	void* getResourceContent(); //得到下载的数据
 	
 	int init();  //初始化类
-	int reinit();  //重新初始化类
+	//int reinit();  //重新初始化类
 
 	int getSockHandle();  //得到socket句柄
 
