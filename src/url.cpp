@@ -14,7 +14,7 @@ Url::~Url()
 
 }
 
-int Url::parserUrl(const string& url_str)
+int Url::initUrl(const string& url_str)
 {
 	m_url.url = url_str;
 	m_url.protocal = url_str.substr(0, url_str.find(":"));
@@ -31,7 +31,7 @@ int Url::parserUrl(const string& url_str)
 	m_url.filename = tmp2.substr(pos3+1, tmp2.length()-(pos3+1));
 }
 
-URL* Url::getUrl()
+URL* Url::getURL()
 {
 	return &m_url;
 }

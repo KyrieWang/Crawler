@@ -10,7 +10,8 @@ typedef struct stru_url
 	std::string domainName; //域名
 	std::string path; //资源路径
 	std::string filename; //文件名
-	//std::string filetype; //当前资源类型
+	std::string ip; //IP
+	//int port; //端口
 	int state; //当前url处理状态
 	int deep; //当前url深度
 }URL;
@@ -21,9 +22,9 @@ public:
 	Url();
 	~Url();
 
-	int parserUrl(const std::string& url_str); //解析url，填充url结构
+	int initUrl(const std::string& url_str); //解析url，填充url结构
 
-	URL* getUrl();
+	URL* getURL();
 
 private:
 	URL m_url;
