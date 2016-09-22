@@ -5,7 +5,20 @@
 #include <map>
 #include <deque>
 #include <string>
-#include "url.h"
+
+/*url结构体*/
+typedef struct stru_url
+{
+	std::string url; //完整的url
+	std::string protocal; //协议类型
+	std::string domainName; //域名
+	std::string path; //资源路径
+	std::string filename; //文件名
+	std::string ip; //IP
+	//int port; //端口
+	int state; //当前url处理状态
+	int deep; //当前url深度
+}Url;
 
 class UrlManager
 {
@@ -22,6 +35,7 @@ public:
 
 private:
 	static void dns_callback(int result, char type, int count, int ttl,void *addresses, void *arg); //dns解析回调函数
+	void initUrl(const std::string& url_str); //填充url结构体
 //	string* findIp(const std::string& host_str); //根据域名查找ip
 
 private:
