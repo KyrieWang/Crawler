@@ -1,9 +1,20 @@
 #ifndef HTTP_H_
 #define HTTP_H_
 
-#include <string>
+#include <string.h>
 
-using namespace std;
+typedef struct http_response
+{
+	ResHead *head_ptr;
+	char *content;
+	int content_len;
+}Response;
+
+typedef struct response_head
+{
+	char *content_type;
+	int status_code;
+}ResHead;
 
 class Http
 {
@@ -11,8 +22,8 @@ public:
 	Http();
 	~Http();
 
-	int parseHead(void* buf);
-	int creatHead();
+	int parseResHead();
+	int creatReqHead();
 
 	int getUrl(URL* url);
 	int getContent(void* buf); //传入预先申请的缓冲区地址
@@ -25,6 +36,8 @@ public:
 private:
 	URL url;
 	void* buf;
+	char *request;
+	Response response;
 };
 
 #endif

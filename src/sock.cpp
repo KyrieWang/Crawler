@@ -11,6 +11,16 @@
 
 using namespace std;
 
+Socket::Socket()
+{
+
+}
+
+Socket::~Socket()
+{
+
+}
+
 int Socket::build_connect(URL* url)
 {
 	const char *ip = (url->ip).c_str();
@@ -44,23 +54,22 @@ int Socket::build_connect(URL* url)
 
 int Socket::dis_connect()
 {
-
+	close(sock_fd);
 }
 
 int Socket::send_request(Url* url)
 {
 	int need, begin, n;
-	char request[1024] = {0};
-
-	cout << "send the request domain name" << url->domainName << endl;
-
-	/*组成HTTP头部信息*/
+	char response[1024] = {0};
+	
 	sprintf(request, "GET /%s HTTP/1.0\r\n"
 					"Host: %s\r\n"
 					"Accept: */*\r\n"
 					"Connection: Keep-Alive\r\n"
 					"User-Agent: Mozilla/5.0 (compatible)\r\n"
 					"Referer: %s\r\n\r\n", url->path, url->domainName, url->domainName);
+
+	cout << "send the request domain name" << url->domainName << endl;
 
 	need = strlen(request);
 	begin = 0;
@@ -89,5 +98,35 @@ int Socket::send_request(Url* url)
 
 int Socket::recv_response()
 {
+	int state = 0, trunc_head = 0, len = 0;
 
+	buf = (char*)malloc(1024*1024);
+
+	while(1)
+	{
+		state = read(sock_fd, buf+len, 1024);
+
+		if (state < 0)
+		{
+			if (errno == EAGAIN || errno == EWOULDBLOCK || errno == EINTR)
+			{
+				usleep(100000);
+				continue;
+			}
+		}
+		else if (state == 0)
+		{
+			
+		}
+		else
+		{
+			len += state;
+			buf[len] = '\0';
+
+			if (!trunc_head)
+			{
+				
+			}
+		}
+	}
 }

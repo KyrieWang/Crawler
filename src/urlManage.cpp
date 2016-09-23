@@ -26,10 +26,11 @@ deque<Url> UrlManager::parse_urldeq;
 
 int UrlManager::addUrl(const std::string& url_str)
 {
-	Url url;
-	initUrl(url_str, url);
+	shared_ptr<Url> url_ptr = make_shared<Url>();
+	
+	initUrl(url_str, *url_ptr);
 
-	src_urldeq.push_back(&url);
+	src_urldeq.push_back(url_ptr);
 
 	return 0;
 }
