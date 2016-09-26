@@ -11,16 +11,16 @@ public:
 	~Socket();
 	
 	int build_connect(Url* url);
-	int dis_connect(Url* url);
+	int dis_connect();
 	int send_request(Url* url);
-	int recv_response();
+	int parse_response(Response* resp_ptr);
 //	int setSocketMod()
 
 private:
 
 private:
 	int sock_fd; //句柄
-	Http http;
+//	Http m_http;
 	char* buf;
 };
 

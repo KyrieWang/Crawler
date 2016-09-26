@@ -96,7 +96,7 @@ int Socket::send_request(Url* url)
 	return 0;
 }
 
-int Socket::recv_response()
+int Socket::parse_response(Response* resp_ptr)
 {
 	int state = 0, trunc_head = 0, len = 0;
 
