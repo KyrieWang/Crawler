@@ -2,6 +2,7 @@
 #include <vector>
 #include <map>
 #include <deque>
+#include <memory>
 #include <arpa/inet.h>
 #include <event2/evdns.h>
 #include <event2/util.h>
@@ -26,7 +27,7 @@ deque<Url> UrlManager::parse_urldeq;
 
 int UrlManager::addUrl(const std::string& url_str)
 {
-	shared_ptr<Url> url_ptr = make_shared<Url>();
+	auto url_ptr = make_shared<Url>();
 	
 	initUrl(url_str, *url_ptr);
 
@@ -79,7 +80,7 @@ int UrlManager::setUrlState(Url* url_ptr)
 int UrlManager::parserUrl()
 {
 	Url *url_ptr = nullptr;
-	map<string,string>::const.iterator ip_iter;
+	map<string,string>::iterator ip_iter;
 
 	while(1)
 	{
@@ -155,15 +156,12 @@ void UrlManager::dns_callback(int result, char type, int count, int ttl, void *a
 	event_loopexit(NULL);
 }
 
-/*
-string* UrlManager::findIp(const std::string& host_str)
+bool UrlManager::is_src_urldeq_empty()
 {
-	auto ip_iter = host_ip_map.find(host_str);
-	string *ip = nullptr;
 
-	if(ip_iter != host_ip_map.end())
-		ip = &(ip_iter->second);
-	
-	return ip;
 }
-*/
+
+bool UrlManager::is_parse_urldeq_empty()
+{
+	
+}

@@ -2,6 +2,7 @@
 #define SOCKET_H_
 
 #include <socket.h>
+#include <stddef.h>
 #include "http.h"
 
 /*http响应*/
@@ -9,7 +10,7 @@ typedef struct http_response
 {
 	ResHead *head_ptr;
 	char *content;
-	int cont_len;
+	size_t cont_len;
 }Response;
 
 /*http响应头*/
@@ -28,11 +29,12 @@ public:
 	int build_connect(Url* url);
 	int dis_connect();
 	int send_request(Url* url);
-	int recv_response(std::deque<Url*> src_urldeq);
+	int recv_response(UrlManager url_mang);
 
 private:
-	int save_content();
-	int parse_head();
+	int save_content(Response *resp);
+	ResHead* parse_head(char *head);
+	int parse_content(UrlManager url_mang, Response *resp);
 
 private:
 	int sock_fd; //句柄
