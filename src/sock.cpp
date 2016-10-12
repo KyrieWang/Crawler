@@ -98,7 +98,7 @@ int Socket::send_request(Url* url)
 	return 0;
 }
 
-int Socket::recv_response(UrlManager url_mang)
+int Socket::recv_response(UrlManager url_mang, Url *url_ptr)
 {
 	int trunc_head = 0, state = 0; 
 	size_t len = 0;
@@ -128,7 +128,7 @@ int Socket::recv_response(UrlManager url_mang)
 			{
 				//匹配正则表达式，提取url
 				parse_content(url_mang, res_ptr);
-				save_content(res_ptr);
+				save_content(res_ptr, url_ptr);
 			}
 		}
 		else
@@ -167,9 +167,31 @@ int Socket::recv_response(UrlManager url_mang)
 	free(res_ptr);
 }
 
-int Socket::save_content(Response *resp)
+int Socket::save_content(Response *resp, Url *url_ptr)
 {
+	string file_name = url_ptr->url;
+	string cont_str(resp->content);
+	string type_str(resp->head_ptr->cont_type);
 
+	if(type_str.find("text/html") == string::npos)
+		return 1;
+	
+	while((string::size_type pos = file_name.find_first_of("/")) != string::npos)
+	{
+		file_name = file_name.replace(pos, 1, "_");
+	}
+
+	ofstream outfile("/home/hehe/crawlerfile/" + file_name);
+	
+	if(!outfile)
+	{
+		cout<<"open error"<<endl;
+		return 1;
+	}
+
+	outfile<<cont_str;
+	outfile.close();
+	return 0;
 }
 
 ResHead* Socket::parse_head(char *head)
