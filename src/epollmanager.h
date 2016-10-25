@@ -6,11 +6,12 @@
 class EpollManager
 {
 public:
-	EpollManager(int num); //initial epoll
+	EpollManager(int max_job_num); //initial epoll
 	~EpollManager(); //release the handle
 
 	int regSockHandle(int handle);
 	int releaseHandl();
+	int getEpfd();
 
 private:
 	int m_epollHandle;

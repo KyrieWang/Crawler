@@ -7,7 +7,7 @@
 #include <event2/evdns.h>
 #include <event2/util.h>
 #include <event2/event.h>
-#include "urlManage.h"
+#include "urlManager.h"
 
 using namespace std;
 
@@ -158,10 +158,10 @@ void UrlManager::dns_callback(int result, char type, int count, int ttl, void *a
 
 bool UrlManager::is_src_urldeq_empty()
 {
-
+	return src_urldeq.empty();
 }
 
 bool UrlManager::is_parse_urldeq_empty()
 {
-	
+	return parse_urldeq.empty();
 }

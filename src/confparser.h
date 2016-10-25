@@ -30,7 +30,7 @@ protected:
 
 public:
 	static Confparser* getInstance();
-
+	
 	int Loader(const char* conf_filepath); //读取配置文件
 	CONF_FILE* getConfFile();
 

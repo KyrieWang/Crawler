@@ -1,21 +1,22 @@
-#include "spiderApp.h"
+#include <iostream>
+#include <string>
+#include <thread>
+#include <mutex>
+#include "confparser.h"
+#include "urlManager.h"
+#include "sock.h"
+#include "epollmanager.h"
+#include <sys/epoll.h>
+
+using namespace std;
 
 int main(int argc, char const *argv[])
 {
-	/*程序初始化*/
-	spiderApp app;
+	/*读取配置文件*/
+	auto fptr = Confparser::getInstance();
+	fptr->Loader("/home/hehe/crawler/test/spider.conf");
+	CONF_FILE* conffile_ptr = fptr->getConfFile();
 
-	if (app.initApp(argc ,argv) == 0)
-	{
-		SPIDER_LOG(SPIDER_LEVEL_ERROR, "app init is failed");
-		return 1;
-	}
-
-	if (app.run() == 0)
-	{
-		SPIDER_LOG_ERROR(SPIDER_LEVEL_ERROR, "main app has exception");
-		return 1;
-	}
-
-	return 0;
+	struct epoll_event events[conffile_ptr->job_num];
+	
 }

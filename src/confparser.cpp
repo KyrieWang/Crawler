@@ -77,6 +77,3 @@ void Confparser::Trim(string& str)
 		str.erase(str.begin()+end_pos+1, str.end());
 	}
 }
-
-
-
