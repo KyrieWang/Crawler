@@ -34,7 +34,6 @@ int main(int argc, char const *argv[])
 		if(urlManage.is_parse_urldeq_empty())
 			continue;
 
-		Socket sock;
 		auto sock_ptr = make_shared<Socket>();
 		url_ptr = urlManage.getUrlForParseDeque();
 		sock_ptr->build_connect(url_ptr);
