@@ -3,7 +3,6 @@
 
 #include <socket.h>
 #include <stddef.h>
-#include "http.h"
 
 /*http响应*/
 typedef struct http_response
@@ -30,6 +29,7 @@ public:
 	int dis_connect();
 	int send_request(Url* url);
 	int recv_response(UrlManager url_mang);
+	int getSockfd();
 
 private:
 	int save_content(Response *resp);

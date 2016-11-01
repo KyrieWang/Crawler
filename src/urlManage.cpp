@@ -1,12 +1,14 @@
+#include <arpa/inet.h>
+#include <event2/evdns.h>
+#include <event2/util.h>
+#include <event2/event.h>
+
 #include <string>
 #include <vector>
 #include <map>
 #include <deque>
 #include <memory>
-#include <arpa/inet.h>
-#include <event2/evdns.h>
-#include <event2/util.h>
-#include <event2/event.h>
+
 #include "urlManager.h"
 
 using namespace std;
@@ -31,7 +33,7 @@ int UrlManager::addUrl(const std::string& url_str)
 	
 	initUrl(url_str, *url_ptr);
 
-	src_urldeq.push_back(url_ptr);
+	src_urldeq.push_back(url_ ptr);
 
 	return 0;
 }
@@ -48,7 +50,7 @@ int UrlManager::addUrls(const std::vector<std::string>& url_strs)
 
 Url* UrlManager::getUrlForParseDeque()
 {	
-	Url *url_ptr = nullptr;
+	shared_ptr<Url> url_ptr = nullptr;
 
 	if(!parse_urldeq.empty())
 	{
@@ -79,11 +81,15 @@ int UrlManager::setUrlState(Url* url_ptr)
 
 int UrlManager::parserUrl()
 {
-	Url *url_ptr = nullptr;
-	map<string,string>::iterator ip_iter;
+	shared_ptr<Url> url_ptr = nullptr;
+	map<string, string>::iterator ip_iter;
 
 	while(1)
 	{
+		if(is_src_urldeq_empty()) {
+			continue;
+		}
+		
 		url_ptr = src_urldeq.front();
 		src_urldeq.pop_front();
 
@@ -91,7 +97,7 @@ int UrlManager::parserUrl()
 
 		if (ip_iter == host_ip_map.end())
 		{
-		/*dns解析*/
+			/*dns解析*/
 			event_base *base = event_init();
 			evdns_init();
 			evdns_resolve_ipv4(url_ptr->domainName, 0, dns_callback, url_ptr);
@@ -136,7 +142,7 @@ void UrlManager::initUrl(const std::string& url_str， Url& m_url)
 
 void UrlManager::dns_callback(int result, char type, int count, int ttl, void *addresses, void *arg)
 {
-	Url *url_ptr = (Url*)arg;
+	shared_ptr<Url> url_ptr = (Url*)arg;
 	struct in_addr *addrs = (in_addr*)addresses;
 
 	if (result != DNS_ERR_NONE || count == 0)

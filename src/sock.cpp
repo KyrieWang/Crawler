@@ -7,8 +7,10 @@
 #include <stddef.h>
 #include <errno.h>
 #include <unistd.h>
+
 #include <string>
 #include <regex>
+
 #include "sock.h"
 
 using namespace std;
@@ -39,7 +41,7 @@ int Socket::build_connect(URL* url)
 		return -1;
 	}
 
-	if ((sock_fd = socket(AF_NET, SOCK_STREAM|SOCK_NOBLOCK|SOCK_CLOEXEC, 0)) < 0)
+	if ((sock_fd = socket(AF_NET, SOCK_STREAM | SOCK_NOBLOCK|SOCK_CLOEXEC, 0)) < 0)
 	{
 		return -1;
 	}
@@ -241,4 +243,9 @@ int Socket::parse_content(UrlManager url_mang, Response *resp)
 	{
 		cout<<e.what()<<'\t'<<e.code()<<endl;
 	}
+}
+
+int Socket::getSockfd()
+{
+	return sock_fd;
 }

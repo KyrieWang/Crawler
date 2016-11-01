@@ -1,6 +1,7 @@
 #include <memory>
 #include <fstream>
 #include <string>
+
 #include "confparser.h"
 
 using namespace std;

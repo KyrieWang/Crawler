@@ -9,8 +9,10 @@ public:
 	EpollManager(int max_job_num); //initial epoll
 	~EpollManager(); //release the handle
 
-	int regSockHandle(int handle);
-	int releaseHandl();
+	int epRegister(Socket* sock_ptr);
+	int epWait(struct epoll_event* events, int maxevents, int timeout);
+	void epDelete(int handle, struct epoll_event* events);
+	void releaseHandl();
 	int getEpfd();
 
 private:
